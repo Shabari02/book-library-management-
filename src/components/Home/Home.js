@@ -4,6 +4,7 @@ import Navbar from '../Navbar/Navbar'
 import CardC from '../Cards/fetchapi'
 import { CardContainer } from '../Cards/CardContainer';
 import { useState } from 'react';
+import { Footer } from '../Footer/Footer';
 
 export default function Home(){
     const [searchQuery, setSearchQuery] = useState("");
@@ -15,7 +16,7 @@ export default function Home(){
         <div>
             <Navbar />
             <Filter onSearch={handleSearch}/>
-            
+            <Footer />
             {/* <CardContainer /> */}
         </div>
     )

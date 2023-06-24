@@ -95,7 +95,7 @@ const Filter = () => {
               <option value="Sale">For Sale</option>
             </select> */}
              <select id="select-1" className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-            value={pricebtn} onChange={handleSelectChange3}>
+            value={selectedValue3} onChange={handleSelectChange3}>
               <option value="relevance">Sort by</option>
               <option value="relevance">relevance</option>
               <option value="newest">newest</option>
