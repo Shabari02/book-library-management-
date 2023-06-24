@@ -7,6 +7,7 @@ import { Card } from "./Card";
 export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
   const [title, setTitle] = useState([]);
   const [data, setData] = useState([]);
+  const [dataLength, setDataLength] = useState();
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
     setLoading(true);
     axios
       .get(                          
-        `https://www.googleapis.com/books/v1/volumes?q=${query}+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=AIzaSyDSRAaD3fNordm-ulE_TsvFecpx0nFbo9Q&maxResults=6`
+        `https://www.googleapis.com/books/v1/volumes?q=${query}+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=AIzaSyDFl0giKHOMfaLqcvWR8W-vgoQXiEyHwdg&maxResults=3`
       )
       .then((response) => {
         const responseData = response.data;
@@ -32,6 +33,7 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
         // });
     
         // console.log(filteredBooks);
+        setDataLength(responseData.totalItems)
         setLoading(false);
       })
       .catch((error) => {
@@ -44,11 +46,12 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
     setLoading(true);
     axios
       .get(
-        `https://www.googleapis.com/books/v1/volumes?q=anime+&orderBy=${sortBy}&key=AIzaSyDSRAaD3fNordm-ulE_TsvFecpx0nFbo9Q&maxResults=6`
+        `https://www.googleapis.com/books/v1/volumes?q=anime+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=AIzaSyDFl0giKHOMfaLqcvWR8W-vgoQXiEyHwdg&maxResults=3`
       )
       .then((response) => {
         const responseData = response.data;
         setData(responseData.items);
+        setDataLength(responseData.totalItems)
         setLoading(false);
       })
       .catch((error) => {
@@ -63,8 +66,9 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
  
   return (
     <div>
+      <h2 className="text-4xl text-center font-extrabold mt-4">Total number of items: {dataLength}</h2>
       <section className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-      
+        
         {
         data.map((item) => (
         <>
@@ -74,6 +78,7 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
             img={item.volumeInfo.imageLinks?.thumbnail}
             author={item.volumeInfo.authors?.[0]}
             authorInput = {authorInput}
+            available = {item.saleInfo}
           />
         </>
         ))}

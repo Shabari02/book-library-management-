@@ -42,7 +42,7 @@ const Filter = () => {
       <div className="w-full  shadow p-5 rounded-lg bg-white">
         <div className="md:flex md:justify-between ">
           <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
-            Search properties to rent
+            Search books to read
           </h1>
 
           <div class="flex items-center ">
@@ -94,18 +94,15 @@ const Filter = () => {
               <option value="Rent">For Rent</option>
               <option value="Sale">For Sale</option>
             </select> */}
-              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter Author" onChange={handleSelectChange1}/>
-
-              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter Subject" onChange={handleSelectChange2}/>
-
-            
-
-            <select id="select-1" className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+             <select id="select-1" className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
             value={pricebtn} onChange={handleSelectChange3}>
               <option value="relevance">Sort by</option>
               <option value="relevance">relevance</option>
               <option value="newest">newest</option>
             </select>
+              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter Author" onChange={handleSelectChange1}/>
+
+              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter year" onChange={handleSelectChange2}/>
 
             {/* <select id="select-1" className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm" value={selectedValue4} onChange={handleSelectChange4}>
               <option value="">Floor Area</option>

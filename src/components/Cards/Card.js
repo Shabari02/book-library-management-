@@ -1,32 +1,19 @@
 import React, { useEffect, useState } from "react";
 
-export const Card = ({ title, img, author, vol, authorInput }) => {
-  //   const filteredProducts = [vol].filter((data) => {
-  //     // const auth = [];
-  //     // auth.push(data.authors?.[0])
-  //     // if (!auth.toLowerCase().includes(props.authorInput.toLowerCase())) {
-  //     //   return false;
-  //     // }
-  //     // return true;
-  //     // console.log(auth);
-  //     const auth = [];
-  //     vol.forEach((data) => {
-  //       auth.push(data.authors?.[0]);
-  //     });
-
-  //     console.log(auth);
-  //   });
-  //   const auth = [vol].map((data) => data.authors?.[0]).filter(Boolean);
-
-  //   console.log(auth);
+export const Card = ({ title, img, author, vol, available }) => {
+  console.log(available["isEbook"]);
   return (
     <>
       <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-        <a href={vol.previewLink}  target="_blank">
+        <a href={vol.previewLink} target="_blank">
           <img src={img} className="h-80 w-72 object-cover rounded-t-xl" />
           <div className="px-4 py-3 w-72">
             <span className="text-gray-400 mr-3 uppercase text-xs">
-              PageCount: {vol.pageCount}
+              <span class="inline-flex items-center justify-center rounded-full bg-amber-100 px-2.5 py-0.5 mb-3 text-amber-700">
+                <p class="whitespace-nowrap text-sm">
+                  PageCount: {vol.pageCount}
+                </p>
+              </span>
             </span>
             <p className="text-lg font-bold text-black truncate block capitalize">
               {title}
@@ -37,9 +24,14 @@ export const Card = ({ title, img, author, vol, authorInput }) => {
             <p className="text-sm font-semibold text-black cursor-auto my-3">
               {vol.categories?.[0]}
             </p>
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3">
               <p className="text-sm font-semibold text-black cursor-auto my-3">
                 {vol.publishedDate}
+              </p>
+              <p className="text-sm font-semibold text-black cursor-auto my-3">
+                <span className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
+                  {available["isEbook"] ? "Available" : "Not Available"}
+                </span>
               </p>
               <div className="ml-auto">
                 <svg

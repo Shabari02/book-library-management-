@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container text-black ">
+    <div className="container ">
       {isLoading ? <LoadingAnimation /> : <Homes />}
     </div>
   );
