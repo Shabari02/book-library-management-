@@ -14,7 +14,7 @@ const Filter = () => {
     function resetSelect() {
       setSelectedValue1('')
       setSelectedValue2('')
-      setSelectedValue3({ min: 0, max: Infinity })
+      setSelectedValue3('')
       setSelectedValue4('')
       setPriceBtn('')
     }
@@ -39,9 +39,9 @@ const Filter = () => {
     }
   return (
     <>
-      <div className="w-full  shadow p-5 rounded-lg bg-white">
+    <div className="w-full  shadow p-5 rounded-lg ">
         <div className="md:flex md:justify-between ">
-          <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
+          <h1 className="mb-4 title-h1 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl ">
             Search books to read
           </h1>
 
@@ -68,8 +68,8 @@ const Filter = () => {
               <input
                 type="text"
                 id="simple-search"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 "
+                placeholder="Search Books"
                 value={searchQuery}
                 onChange={handleInputChange}
                 required
@@ -79,13 +79,13 @@ const Filter = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-4">
+        {/* <div className="flex items-center justify-between mt-4">
           <p className="font-medium">Filters</p>
 
           <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md" onClick={resetSelect}>
             Reset Filter
           </button>
-        </div>
+        </div> */}
 
         <div>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4 mt-4">
@@ -100,9 +100,9 @@ const Filter = () => {
               <option value="relevance">relevance</option>
               <option value="newest">newest</option>
             </select>
-              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter Author" onChange={handleSelectChange1}/>
+              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter Author" onChange={handleSelectChange1} value={selectedValue1}/>
 
-              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter year" onChange={handleSelectChange2}/>
+              <input type="text" class="shadow-sm border-gray-300 rounded-lg m-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" placeholder="Enter year" onChange={handleSelectChange2} value={selectedValue2}/>
 
             {/* <select id="select-1" className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm" value={selectedValue4} onChange={handleSelectChange4}>
               <option value="">Floor Area</option>

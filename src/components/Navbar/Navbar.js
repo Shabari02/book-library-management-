@@ -45,7 +45,9 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-xl">Book Store</a>
+          <a href="/" className="btn btn-ghost normal-case text-lg ">
+<h1 class="flex items-center sm:text-4xl font-extrabold lg:text-4xl ">Book<span class="bg-blue-100 text-blue-800 sm:text-2xl text-xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-2">STORE</span></h1>
+</a>
         </div>
         <div className="navbar-center hidden lg:flex ">
           <ul className="menu menu-horizontal px-1 ">

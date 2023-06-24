@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 export const Card = ({ title, img, author, vol, available }) => {
-  console.log(available["isEbook"]);
   return (
     <>
       <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
@@ -24,11 +23,11 @@ export const Card = ({ title, img, author, vol, available }) => {
             <p className="text-sm font-semibold text-black cursor-auto my-3">
               {vol.categories?.[0]}
             </p>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-around">
               <p className="text-sm font-semibold text-black cursor-auto my-3">
                 {vol.publishedDate}
               </p>
-              <p className="text-sm font-semibold text-black cursor-auto my-3">
+              <p className="text-sm font-semibold text-black cursor-auto my-3 ml-2">
                 <span className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
                   {available["isEbook"] ? "Available" : "Not Available"}
                 </span>

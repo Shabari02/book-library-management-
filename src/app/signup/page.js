@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar/Navbar";
 import React from "react";
 
 
@@ -5,13 +6,8 @@ const SignUp = () => {
 
   return (
     <div>
-      {/*
-  Heads up! 👋
 
-  Plugins:
-    - @tailwindcss/forms
-*/}
-
+      <Navbar />
       <section className="bg-white">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
           <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
@@ -128,7 +124,7 @@ const SignUp = () => {
                   />
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
+                <div className="col-span-6 ">
                   <label
                     htmlFor="Password"
                     className="block text-sm font-medium text-gray-700"
@@ -144,43 +140,15 @@ const SignUp = () => {
                   />
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="PasswordConfirmation"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Password Confirmation
-                  </label>
+               
 
-                  <input
-                    type="password"
-                    id="PasswordConfirmation"
-                    name="password_confirmation"
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                  />
-                </div>
-
-                <div className="col-span-6">
-                  <label htmlFor="MarketingAccept" className="flex gap-4">
-                    <input
-                      type="checkbox"
-                      id="MarketingAccept"
-                      name="marketing_accept"
-                      className="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
-                    />
-
-                    <span className="text-sm text-gray-700">
-                      I want to receive emails about events, product updates and
-                      company announcements.
-                    </span>
-                  </label>
-                </div>
+              
 
                 <div className="col-span-6">
                   <p className="text-sm text-gray-500">
                     By creating an account, you agree to our
                     <a href="#" className="text-gray-700 underline">
-                      terms and conditions
+                       terms and conditions
                     </a>
                     and
                     <a href="#" className="text-gray-700 underline">
