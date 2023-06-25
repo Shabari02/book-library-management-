@@ -23,7 +23,7 @@ const SignUp = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       toast.success('Login successful!', { position: toast.POSITION.TOP_CENTER });
-      router.push("/home");
+      router.push("/login");
     } catch (error) {
       console.log(error.message);
       const getErrorMessage = (errorCode) => {
@@ -38,7 +38,7 @@ const SignUp = () => {
             return 'User account is disabled.';
           // Add more cases for other error codes as needed
           default:
-            return 'An error occurred during login.';
+            return 'An error occurred during Signup.';
         }
       }
       const errorCode = error.code; // Get the error code
@@ -51,7 +51,7 @@ const SignUp = () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      router.push("/home");
+      router.push("/login");
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       // The signed-in user info.
@@ -72,7 +72,7 @@ const SignUp = () => {
           <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
             <img
               alt="Night"
-              src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+              src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGJvb2tzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60"
               className="absolute inset-0 h-full w-full object-cover opacity-80"
             />
 
@@ -93,12 +93,11 @@ const SignUp = () => {
               </a>
 
               <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                Welcome to Squid 🦑
+              Welcome to BookStore 🦑
               </h2>
 
               <p className="mt-4 leading-relaxed text-white/90">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+              “Good friends, good books, and a sleepy conscience: this is the ideal life.”
               </p>
             </div>
           </section>
@@ -125,12 +124,11 @@ const SignUp = () => {
                 </a>
 
                 <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                  Welcome to Squid 🦑
+                  Welcome to BookStore 🦑
                 </h1>
 
                 <p className="mt-4 leading-relaxed text-gray-500">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+                “Good friends, good books, and a sleepy conscience: this is the ideal life.”
                 </p>
               </div>
 
@@ -171,6 +169,7 @@ const SignUp = () => {
                 </div> */}
 
                 <div className="col-span-6">
+                <h1 class="mb-6 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Register</span></h1>
                   <label
                     htmlFor="Email"
                     className="block text-sm font-medium text-gray-700"

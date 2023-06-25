@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { useRouter } from "next/navigation";
-import Link from 'next/link';
+import Link from "next/link";
+import { useThemeContext } from "@/app/Context/store";
 
 export default function Navbar() {
   // const router = useRouter();
@@ -10,6 +11,7 @@ export default function Navbar() {
   // const handleLoginClick = () => {
   //   router.push("/login");
   // };
+  const { isLoggedIn, logout } = useThemeContext();
   return (
     <>
       <div className="navbar  border-b-4">
@@ -36,34 +38,54 @@ export default function Navbar() {
               className="menu menu-compact dropdown-content mt-3 p-2 shadow  rounded-box w-52"
             >
               <li>
-                <a>Books</a>
+                <a>Dashboard</a>
               </li>
               <li tabIndex={0}>
-                <a className="justify-between">
-                  Favourite
-                </a>
+                <a className="justify-between">Books store</a>
               </li>
             </ul>
           </div>
           <a href="/" className="btn btn-ghost normal-case text-lg ">
-<h1 class="flex items-center sm:text-4xl font-extrabold lg:text-4xl ">Book<span class="bg-blue-100 text-blue-800 sm:text-2xl text-xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-2">STORE</span></h1>
-</a>
+            <h1 class="flex items-center sm:text-4xl font-extrabold lg:text-4xl ">
+              Book
+              <span class="bg-blue-100 text-blue-800 sm:text-2xl text-xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-2">
+                STORE
+              </span>
+            </h1>
+          </a>
         </div>
         <div className="navbar-center hidden lg:flex ">
-          <ul className="menu menu-horizontal px-1 ">
-            <li>
-              <a>Books</a>
-            </li>
-            <li tabIndex={0}>
-              <a>
-                 Favourite
-              </a>
-            </li>
-          </ul>
+          {isLoggedIn && (
+            <>
+              <ul className="menu menu-horizontal px-1 ">
+                <li>
+                  <Link href="/"> Dashboard</Link>
+                </li>
+                <li tabIndex={0}>
+                  <Link href="/home"> Books store</Link>
+                </li>
+              </ul>
+            </>
+          )}
         </div>
         <div className="navbar-end">
-          <Link href="/login" className="  btn btn-outline">Login</Link>
-          <Link href="/signup" className="btn btn-primary ml-4">Signup</Link>
+          {!isLoggedIn && (
+            <>
+              <Link href="/login" className="btn btn-outline">
+                Login
+              </Link>
+              <Link href="/signup" className="btn btn-primary ml-4">
+                Signup
+              </Link>
+            </>
+          )}
+          {isLoggedIn && (
+            <>
+              <button href="/" className="btn btn-outline" onClick={logout}>
+                Logout
+              </button>
+            </>
+          )}
         </div>
       </div>
     </>

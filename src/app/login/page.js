@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 import { getAuth, signInWithEmailAndPassword , GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useThemeContext } from "../Context/store";
 
 const Login = () => {
+  const {isLoggedIn, setIsLoggedIn} = useThemeContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -18,6 +20,7 @@ const Login = () => {
       await signInWithEmailAndPassword(auth ,email, password);
       toast.success('Login successful!', { position: toast.POSITION.TOP_CENTER });
       router.push('/home');
+      setIsLoggedIn(true);
     } catch (error) {
       console.log(error);
       const getErrorMessage = (errorCode) => {
@@ -45,6 +48,7 @@ const Login = () => {
     try {
       await signInWithPopup(auth, provider);
       router.push('/home');
+      setIsLoggedIn(true);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       // The signed-in user info.
@@ -64,11 +68,12 @@ const Login = () => {
           <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
             <img
               alt="Night"
-              src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+              src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGJvb2tzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60"
               className="absolute inset-0 h-full w-full object-cover opacity-80"
             />
 
             <div className="hidden lg:relative lg:block lg:p-12">
+            
               <a className="block text-white" href="/">
                 <span className="sr-only">Home</span>
                 <svg
@@ -85,12 +90,11 @@ const Login = () => {
               </a>
 
               <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                Welcome to Squid 🦑
+              Welcome to BookStore 🦑
               </h2>
 
               <p className="mt-4 leading-relaxed text-white/90">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+              “So many books, so little time.” 
               </p>
             </div>
           </section>
@@ -117,19 +121,18 @@ const Login = () => {
                 </a>
 
                 <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                  Welcome to Squid 🦑
+                Welcome to BookStore 🦑
                 </h1>
 
                 <p className="mt-4 leading-relaxed text-gray-500">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+                “So many books, so little time.” 
                 </p>
               </div>
 
               <form  className="mt-8 w-full grid grid-cols-6 gap-6" onSubmit={handleLogin}>
                 
 
-                <div className="col-span-6">
+                <div className="col-span-6"><h1 class="mb-6 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">LogIn page</span></h1>
                   <label
                     htmlFor="Email"
                     className="block text-sm font-medium text-gray-700"
