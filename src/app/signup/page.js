@@ -1,10 +1,17 @@
-"use client"
+"use client";
 import Navbar from "@/components/Navbar/Navbar";
 import React, { useState } from "react";
-import { useRouter } from 'next/navigation';
-import firebase from "@/config/firebaseConfig"
+import { useRouter } from "next/navigation";
+import firebase from "@/config/firebaseConfig";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 const SignUp = () => {
   const auth = getAuth();
   const [email, setEmail] = useState("");
@@ -15,24 +22,51 @@ const SignUp = () => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/home');
+      toast.success('Login successful!', { position: toast.POSITION.TOP_CENTER });
+      router.push("/home");
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      const getErrorMessage = (errorCode) => {
+        switch (errorCode) {
+          case 'auth/email-already-in-use':
+            return 'Email is already in use.';
+          case 'auth/weak-password':
+            return 'Password should be at least 6 characters.';
+          case 'auth/invalid-email':
+            return 'Invalid email.';
+          case 'auth/user-disabled':
+            return 'User account is disabled.';
+          // Add more cases for other error codes as needed
+          default:
+            return 'An error occurred during login.';
+        }
+      }
+      const errorCode = error.code; // Get the error code
+      toast.error(getErrorMessage(errorCode), { position: toast.POSITION.TOP_CENTER });
     }
+   
+    
   };
   const handleGoogleSignup = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(provider);
-      router.push('/home');
+      await signInWithPopup(auth, provider);
+      router.push("/home");
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      console.log(user);
     } catch (error) {
       console.log(error);
     }
+   
   };
 
   return (
     <div>
       <Navbar />
+      <ToastContainer />
       <section className="bg-white">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
           <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
@@ -100,7 +134,10 @@ const SignUp = () => {
                 </p>
               </div>
 
-              <form  className="mt-8 grid grid-cols-6 gap-6" onSubmit={handleSignup}>
+              <form
+                className="mt-8 grid grid-cols-6 gap-6"
+                onSubmit={handleSignup}
+              >
                 {/* <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="FirstName"
@@ -146,7 +183,8 @@ const SignUp = () => {
                     id="Email"
                     name="email"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    value={email} onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -163,7 +201,8 @@ const SignUp = () => {
                     id="Password"
                     name="password"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    value={password} onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
@@ -179,13 +218,12 @@ const SignUp = () => {
                     </a>
                     .
                   </p>
-                  <button className='bg-white rounded-full p-4 ml-5' type='button' onClick={handleGoogleSignup}>
-                        {/* <img src={googleIcon} alt="" className='w-10'/> */} Sign up with Google
-                 </button>   
+                  
+                  
                 </div>
 
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500" >
+                  <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
                     Create an account
                   </button>
 
@@ -194,10 +232,33 @@ const SignUp = () => {
                     <a href="/login" className="text-gray-700 underline">
                       Log in
                     </a>
-                    .
                   </p>
                 </div>
               </form>
+              <div class=" px-6 sm:px-0 max-w-sm">
+                    <button
+                      type="button"
+                      class="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2 mt-6"
+                      onClick={handleGoogleSignup}
+                    >
+                      <svg
+                        class="mr-2 -ml-1 w-4 h-4"
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fab"
+                        data-icon="google"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 488 512"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                        ></path>
+                      </svg>
+                      Sign up with Google<div></div>
+                    </button>
+                  </div>
             </div>
           </main>
         </div>

@@ -3,7 +3,9 @@ import Navbar from "@/components/Navbar/Navbar";
 import React, { useState } from "react";
 import firebase from "@/config/firebaseConfig"
 import { useRouter } from 'next/navigation';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword , GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,17 +16,40 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth ,email, password);
+      toast.success('Login successful!', { position: toast.POSITION.TOP_CENTER });
       router.push('/home');
     } catch (error) {
       console.log(error);
+      const getErrorMessage = (errorCode) => {
+        switch (errorCode) {
+          case 'auth/email-already-in-use':
+            return 'Email is already in use.';
+          case 'auth/weak-password':
+            return 'Password should be at least 6 characters.';
+          case 'auth/invalid-email':
+            return 'Invalid email.';
+          case 'auth/user-disabled':
+            return 'User account is disabled.';
+          // Add more cases for other error codes as needed
+          default:
+            return 'An error occurred during login.';
+        }
+      }
+      const errorCode = error.code; // Get the error code
+      toast.error(getErrorMessage(errorCode), { position: toast.POSITION.TOP_CENTER });
     }
   };
 
-  const handleGoogleLogin = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
+  const handleGoogleSignup = async () => {
+    const provider = new GoogleAuthProvider();
     try {
-      await firebase.auth().signInWithPopup(provider);
+      await signInWithPopup(auth, provider);
       router.push('/home');
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      console.log(user)
     } catch (error) {
       console.log(error);
     }
@@ -33,6 +58,7 @@ const Login = () => {
     <div>
 
       <Navbar />
+      <ToastContainer />
       <section className="bg-white">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
           <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
@@ -151,7 +177,30 @@ const Login = () => {
                   </p>
                 </div>
               </form>
-              <button onClick={handleGoogleLogin}>Login with Google</button>
+              <div class="px-6 sm:px-0 max-w-sm">
+                    <button
+                      type="button"
+                      class="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mt-6 mr-2 mb-2"
+                      onClick={handleGoogleSignup}
+                    >
+                      <svg
+                        class="mr-2 -ml-1 w-4 h-4"
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fab"
+                        data-icon="google"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 488 512"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                        ></path>
+                      </svg>
+                      Login with Google<div></div>
+                    </button>
+                  </div>
             </div>
           </main>
         </div>
