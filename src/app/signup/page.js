@@ -1,12 +1,37 @@
+"use client"
 import Navbar from "@/components/Navbar/Navbar";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
+import firebase from "@/config/firebaseConfig"
 
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const SignUp = () => {
+  const auth = getAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleGoogleSignup = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      await signInWithPopup(provider);
+      router.push('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
-
       <Navbar />
       <section className="bg-white">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
@@ -75,8 +100,8 @@ const SignUp = () => {
                 </p>
               </div>
 
-              <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
+              <form  className="mt-8 grid grid-cols-6 gap-6" onSubmit={handleSignup}>
+                {/* <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="FirstName"
                     className="block text-sm font-medium text-gray-700"
@@ -106,7 +131,7 @@ const SignUp = () => {
                     name="last_name"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                   />
-                </div>
+                </div> */}
 
                 <div className="col-span-6">
                   <label
@@ -121,6 +146,7 @@ const SignUp = () => {
                     id="Email"
                     name="email"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -137,18 +163,15 @@ const SignUp = () => {
                     id="Password"
                     name="password"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    value={password} onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-
-               
-
-              
 
                 <div className="col-span-6">
                   <p className="text-sm text-gray-500">
                     By creating an account, you agree to our
                     <a href="#" className="text-gray-700 underline">
-                       terms and conditions
+                      terms and conditions
                     </a>
                     and
                     <a href="#" className="text-gray-700 underline">
@@ -156,10 +179,13 @@ const SignUp = () => {
                     </a>
                     .
                   </p>
+                  <button className='bg-white rounded-full p-4 ml-5' type='button' onClick={handleGoogleSignup}>
+                        {/* <img src={googleIcon} alt="" className='w-10'/> */} Sign up with Google
+                 </button>   
                 </div>
 
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                  <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500" >
                     Create an account
                   </button>
 

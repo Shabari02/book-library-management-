@@ -1,9 +1,34 @@
+"use client"
 import Navbar from "@/components/Navbar/Navbar";
-import React from "react";
-
+import React, { useState } from "react";
+import firebase from "@/config/firebaseConfig"
+import { useRouter } from 'next/navigation';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const auth = getAuth();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth ,email, password);
+      router.push('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const handleGoogleLogin = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      await firebase.auth().signInWithPopup(provider);
+      router.push('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
 
@@ -75,7 +100,7 @@ const Login = () => {
                 </p>
               </div>
 
-              <form action="#" className="mt-8 w-full grid grid-cols-6 gap-6">
+              <form  className="mt-8 w-full grid grid-cols-6 gap-6" onSubmit={handleLogin}>
                 
 
                 <div className="col-span-6">
@@ -91,6 +116,7 @@ const Login = () => {
                     id="Email"
                     name="email"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -107,14 +133,9 @@ const Login = () => {
                     id="Password"
                     name="password"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    value={password} onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-
-               
-
-              
-
-                
 
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                   <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
@@ -130,6 +151,7 @@ const Login = () => {
                   </p>
                 </div>
               </form>
+              <button onClick={handleGoogleLogin}>Login with Google</button>
             </div>
           </main>
         </div>

@@ -3,6 +3,7 @@ import axios from "axios";
 import LoadingAnimation from "../LoadingAnimation";
 import { CardContainer } from "./CardContainer";
 import { Card } from "./Card";
+import Error from "../Error/Error";
 
 export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
   const [data, setData] = useState([]);
@@ -25,16 +26,11 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
     setLoading(true);
     axios
       .get(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=AIzaSyDFl0giKHOMfaLqcvWR8W-vgoQXiEyHwdg&maxResults=6`
+        `https://www.googleapis.com/books/v1/volumes?q=${query}+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=${process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY}&maxResults=6`
       )
       .then((response) => {
         const responseData = response.data;
         setData(responseData.items);
-        // const filteredBooks = responseData.items.filter(item => {
-        //   return item.volumeInfo.authors?.includes(authorInput);
-        // });
-
-        // console.log(filteredBooks);
         setDataLength(responseData.totalItems);
         setLoading(false);
       })
@@ -48,7 +44,7 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
     setLoading(true);
     axios
       .get(
-        `https://www.googleapis.com/books/v1/volumes?q=anime+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=AIzaSyDFl0giKHOMfaLqcvWR8W-vgoQXiEyHwdg&startIndex=${startIndex}&maxResults=6`
+        `https://www.googleapis.com/books/v1/volumes?q=anime+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&key=${process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY}&startIndex=${startIndex}&maxResults=6`
       )
       .then((response) => {
         const responseData = response.data;
@@ -67,7 +63,7 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${userInput}+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&startIndex=${startIndex}&maxResults=6&key=AIzaSyDFl0giKHOMfaLqcvWR8W-vgoQXiEyHwdg`
+        `https://www.googleapis.com/books/v1/volumes?q=${userInput}+inauthor:${authorInput}+${sub}&orderBy=${sortBy}&startIndex=${startIndex}&maxResults=6&key=${process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY}`
       );
       const data = await response.json();
       setData((prevBooks) => [...prevBooks, ...data.items]);
@@ -81,7 +77,7 @@ export default function Profile({ searchQuery, authorInput, sortBy, sub }) {
   };
 
   if (isLoading) return <LoadingAnimation />;
-  if (!data || data.length === 0) return <p>No profile data</p>;
+  if (!data || data.length === 0) return <Error />;
 
   return (
     <div className="">
