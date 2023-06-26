@@ -2,6 +2,8 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useThemeContext } from "@/app/Context/store";
+import {FiLogOut } from 'react-icons/fi'
+
 
 export default function Navbar() {
   // const router = useRouter();
@@ -11,7 +13,7 @@ export default function Navbar() {
   // const handleLoginClick = () => {
   //   router.push("/login");
   // };
-  const { isLoggedIn, logout, toggleDropdown ,isOpen ,userDetails} = useThemeContext();
+  const { isLoggedIn, logout, toggleDropdown ,isOpen ,userDetails, userCurrentState, setUserCurrentState} = useThemeContext();
   return (
     <>
       <div className="navbar  border-b-4">
@@ -41,7 +43,7 @@ export default function Navbar() {
                 <a>Dashboard</a>
               </li>
               <li tabIndex={0}>
-                <a className="justify-between">Books store</a>
+                <Link href="/" className="justify-between">Books store</Link>
               </li>
             </ul>
           </div>
@@ -55,7 +57,7 @@ export default function Navbar() {
           </a>
         </div>
         <div className="navbar-center hidden lg:flex ">
-          {isLoggedIn && (
+          {userCurrentState && (
             <>
               <ul className="menu menu-horizontal px-1 ">
                 <li>
@@ -69,21 +71,9 @@ export default function Navbar() {
           )}
         </div>
         <div className="navbar-end">
-          {!isLoggedIn && (
+          {userCurrentState ? (
             <>
-              <Link href="/login" className="btn btn-outline">
-                Login
-              </Link>
-              <Link href="/signup" className="btn btn-primary ml-4">
-                Signup
-              </Link>
-            </>
-          )}
-          {isLoggedIn && (
-            <>
-              {/* <button href="/" className="btn btn-outline" onClick={logout}>
-                Logout
-              </button> */}
+              
               <div className="dropdown dropdown-end">
                 <label
                   tabIndex={0}
@@ -106,14 +96,31 @@ export default function Navbar() {
                         </Link>
                       </li>
                       <li>
-                        <button onClick={logout}>Logout </button>
+                        <button onClick={logout}>Logout <FiLogOut size={19} color="red"/></button>
                       </li>
                     </ul>
                   </>
                 )}
               </div>
+            </> 
+            
+          ) :
+            (
+              <>
+              {/* <button href="/" className="btn btn-outline" onClick={logout}>
+                Logout
+              </button> */}
+              <Link href="/login" className="btn btn-outline">
+                Login
+              </Link>
+              <Link href="/signup" className="btn btn-primary ml-4">
+                Signup
+              </Link>
+              
             </>
-          )}
+            )
+          }
+          
         </div>
       </div>
     </>
