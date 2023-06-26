@@ -3,17 +3,22 @@ import Navbar from "@/components/Navbar/Navbar";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import firebase from "@/config/firebaseConfig";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { doc,collection, setDoc } from "firebase/firestore"; 
+import { db } from "@/config/firebaseConfig";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { useThemeContext } from "../Context/store";
 const SignUp = () => {
+  const { setUserDetails } = useThemeContext();
   const auth = getAuth();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -21,46 +26,75 @@ const SignUp = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      toast.success('Login successful!', { position: toast.POSITION.TOP_CENTER });
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      toast.success("Login successful!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       router.push("/login");
+      const userName = `${firstName} ${lastName}`;
+      const user = result.user.uid;
+      setDoc(doc(db,'user',user),{
+        userName: userName,
+        email: email,
+        photoUrl: "https://avatars.dicebear.com/api/open-peeps/stefan.svg",
+    })
+      console.log(user.uid)
+      
+
+      setUserDetails({
+        userName: userName,
+        email: email,
+        photoUrl: "https://avatars.dicebear.com/api/open-peeps/stefan.svg",
+      });
+
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+
     } catch (error) {
       console.log(error.message);
       const getErrorMessage = (errorCode) => {
         switch (errorCode) {
-          case 'auth/email-already-in-use':
-            return 'Email is already in use.';
-          case 'auth/weak-password':
-            return 'Password should be at least 6 characters.';
-          case 'auth/invalid-email':
-            return 'Invalid email.';
-          case 'auth/user-disabled':
-            return 'User account is disabled.';
-          // Add more cases for other error codes as needed
+          case "auth/email-already-in-use":
+            return "Email is already in use.";
+          case "auth/weak-password":
+            return "Password should be at least 6 characters.";
+          case "auth/invalid-email":
+            return "Invalid email.";
+          case "auth/user-disabled":
+            return "User account is disabled.";
           default:
-            return 'An error occurred during Signup.';
+            return "An error occurred during Signup.";
         }
-      }
-      const errorCode = error.code; // Get the error code
-      toast.error(getErrorMessage(errorCode), { position: toast.POSITION.TOP_CENTER });
+      };
+      const errorCode = error.code; 
+      toast.error(getErrorMessage(errorCode), {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
-   
-    
   };
   const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
       router.push("/login");
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      console.log(user);
+      const userName = user.displayName;
+      const email = user.email;
+      const photoUrl = user.photoURL;
+
+      setUserDetails({
+        userName: userName,
+        email: email,
+        photoUrl: photoUrl,
+      });
     } catch (error) {
       console.log(error);
     }
-   
   };
 
   return (
@@ -93,11 +127,12 @@ const SignUp = () => {
               </a>
 
               <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-              Welcome to BookStore 🦑
+                Welcome to BookStore 🦑
               </h2>
 
               <p className="mt-4 leading-relaxed text-white/90">
-              “Good friends, good books, and a sleepy conscience: this is the ideal life.”
+                “Good friends, good books, and a sleepy conscience: this is the
+                ideal life.”
               </p>
             </div>
           </section>
@@ -128,18 +163,25 @@ const SignUp = () => {
                 </h1>
 
                 <p className="mt-4 leading-relaxed text-gray-500">
-                “Good friends, good books, and a sleepy conscience: this is the ideal life.”
+                  “Good friends, good books, and a sleepy conscience: this is
+                  the ideal life.”
                 </p>
               </div>
-
+              <h1 class="mb-6 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+                      Register
+                    </span>
+                  </h1>
               <form
                 className="mt-8 grid grid-cols-6 gap-6"
                 onSubmit={handleSignup}
               >
-                {/* <div className="col-span-6 sm:col-span-3">
+               
+                <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="FirstName"
                     className="block text-sm font-medium text-gray-700"
+                   
                   >
                     First Name
                   </label>
@@ -149,6 +191,9 @@ const SignUp = () => {
                     id="FirstName"
                     name="first_name"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -165,11 +210,14 @@ const SignUp = () => {
                     id="LastName"
                     name="last_name"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
                   />
-                </div> */}
+                </div>
 
                 <div className="col-span-6">
-                <h1 class="mb-6 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Register</span></h1>
+                  
                   <label
                     htmlFor="Email"
                     className="block text-sm font-medium text-gray-700"
@@ -217,8 +265,6 @@ const SignUp = () => {
                     </a>
                     .
                   </p>
-                  
-                  
                 </div>
 
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
@@ -235,29 +281,29 @@ const SignUp = () => {
                 </div>
               </form>
               <div class=" px-6 sm:px-0 max-w-sm">
-                    <button
-                      type="button"
-                      class="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2 mt-6"
-                      onClick={handleGoogleSignup}
-                    >
-                      <svg
-                        class="mr-2 -ml-1 w-4 h-4"
-                        aria-hidden="true"
-                        focusable="false"
-                        data-prefix="fab"
-                        data-icon="google"
-                        role="img"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 488 512"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-                        ></path>
-                      </svg>
-                      Sign up with Google<div></div>
-                    </button>
-                  </div>
+                <button
+                  type="button"
+                  class="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2 mt-6"
+                  onClick={handleGoogleSignup}
+                >
+                  <svg
+                    class="mr-2 -ml-1 w-4 h-4"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fab"
+                    data-icon="google"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 488 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                    ></path>
+                  </svg>
+                  Sign up with Google<div></div>
+                </button>
+              </div>
             </div>
           </main>
         </div>

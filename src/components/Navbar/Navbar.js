@@ -11,7 +11,7 @@ export default function Navbar() {
   // const handleLoginClick = () => {
   //   router.push("/login");
   // };
-  const { isLoggedIn, logout } = useThemeContext();
+  const { isLoggedIn, logout, toggleDropdown ,isOpen ,userDetails} = useThemeContext();
   return (
     <>
       <div className="navbar  border-b-4">
@@ -81,9 +81,37 @@ export default function Navbar() {
           )}
           {isLoggedIn && (
             <>
-              <button href="/" className="btn btn-outline" onClick={logout}>
+              {/* <button href="/" className="btn btn-outline" onClick={logout}>
                 Logout
-              </button>
+              </button> */}
+              <div className="dropdown dropdown-end">
+                <label
+                  tabIndex={0}
+                  className="btn btn-ghost btn-circle avatar"
+                  onClick={toggleDropdown}
+                >
+                  <div className="w-10 rounded-full">
+                    <img src={userDetails.photoUrl} />
+                  </div>
+                </label>
+                {isOpen && (
+                  <>
+                    <ul
+                      tabIndex={0}
+                      className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                    >
+                      <li>
+                        <Link href="/profile" className="justify-between">
+                          Profile
+                        </Link>
+                      </li>
+                      <li>
+                        <button onClick={logout}>Logout </button>
+                      </li>
+                    </ul>
+                  </>
+                )}
+              </div>
             </>
           )}
         </div>
