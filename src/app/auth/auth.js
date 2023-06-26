@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useThemeContext } from '../Context/store';
 import {  onAuthStateChanged} from "firebase/auth";
 import { getDoc, doc } from 'firebase/firestore'; 
-import {auth, db} from '@/config/firebaseConfig'
+import {auth, db} from '@/app/config/firebaseConfig'
 
 export const withAuth = (WrappedComponent) => {
 

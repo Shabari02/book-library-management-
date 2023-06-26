@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext({})
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import {auth} from '@/config/firebaseConfig'
+import {auth} from '@/app/config/firebaseConfig'
 import { useRouter } from "next/navigation";
 
 export const ThemeContextProvider = ({ children }) => {

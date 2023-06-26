@@ -1,7 +1,7 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
 import React, { useState } from "react";
-import firebase from "@/config/firebaseConfig";
+import firebase from "@/app/config/firebaseConfig";
 import { useRouter } from "next/navigation";
 import {
   getAuth,
@@ -13,7 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useThemeContext } from "../Context/store";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/config/firebaseConfig";
+import { db } from "@/app/config/firebaseConfig";
 
 const Login = () => {
   const { isLoggedIn, setIsLoggedIn, setUserDetails, userGet, setUserGet } =

@@ -2,11 +2,11 @@
 import Navbar from "@/components/Navbar/Navbar";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import firebase from "@/config/firebaseConfig";
+import firebase from "@/app/config/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { doc,collection, setDoc } from "firebase/firestore"; 
-import { db } from "@/config/firebaseConfig";
+import { db } from "@/app/config/firebaseConfig";
 import {
   getAuth,
   createUserWithEmailAndPassword,
