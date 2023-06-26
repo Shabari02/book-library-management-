@@ -5,10 +5,10 @@ import { Footer } from "../Footer/Footer";
 
 function Dashboard() {
   return (
-    <div>
+    <>
       <Navbar />
       <div>
-        <section className="relative bg-[url(https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)] bg-cover bg-center bg-no-repeat">
+        <section className="relative bg-[url(https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)] bg-cover bg-center bg-no-repeat ">
           <div className="absolute inset-0 bg-white/75 sm:bg-transparent sm:from-white/95 sm:to-white/25 ltr:sm:bg-gradient-to-r rtl:sm:bg-gradient-to-l"></div>
           <div className=" relative mx-auto max-w-screen-xl px-4 py-32 sm:px-6 lg:flex lg:h-screen lg:items-center lg:px-8">
             <div className="bg-[#f5f5f5] max-w-2xl text-center sm:text-left p-6 rounded-lg">
@@ -39,7 +39,7 @@ function Dashboard() {
           </div>
         </section>
       </div>
-    </div>
+    </>
   );
 }
 

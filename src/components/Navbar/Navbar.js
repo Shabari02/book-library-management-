@@ -2,23 +2,23 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useThemeContext } from "@/app/Context/store";
-import {FiLogOut } from 'react-icons/fi'
-
+import { FiLogOut } from "react-icons/fi";
 
 export default function Navbar() {
-  // const router = useRouter();
-  // const handleSignUpClick = () => {
-  //   router.push("/signup");
-  // };
-  // const handleLoginClick = () => {
-  //   router.push("/login");
-  // };
-  const { isLoggedIn, logout, toggleDropdown ,isOpen ,userDetails, userCurrentState, setUserCurrentState} = useThemeContext();
+  const {
+    isLoggedIn,
+    logout,
+    toggleDropdown,
+    isOpen,
+    userDetails,
+    userCurrentState,
+    setUserCurrentState,
+  } = useThemeContext();
   return (
     <>
       <div className="navbar  border-b-4">
         <div className="navbar-start">
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,49 @@ export default function Navbar() {
                 <Link href="/" className="justify-between">Books store</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
+          {userCurrentState && (
+            <div className="drawer md:hidden z-50">
+              <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+              <div className="drawer-content">
+                {/* Page content here */}
+                <label htmlFor="my-drawer" className="btn  drawer-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h8m-8 6h16"
+                    />
+                  </svg>
+                </label>
+              </div>
+              <div className="drawer-side">
+                <label htmlFor="my-drawer" className="drawer-overlay"></label>
+                <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
+                  {/* Sidebar content here */}
+                  <li>
+                    <Link href="/">Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link href="/home">Books store</Link>
+                  </li>
+                  <li className="bg-red">
+                    <button onClick={logout} >
+                      Logout <FiLogOut size={19} color="red" />
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+
           <a href="/" className="btn btn-ghost normal-case text-lg ">
             <h1 class="flex items-center sm:text-4xl font-extrabold lg:text-4xl ">
               Book
@@ -73,7 +115,6 @@ export default function Navbar() {
         <div className="navbar-end">
           {userCurrentState ? (
             <>
-              
               <div className="dropdown dropdown-end">
                 <label
                   tabIndex={0}
@@ -96,17 +137,17 @@ export default function Navbar() {
                         </Link>
                       </li>
                       <li>
-                        <button onClick={logout}>Logout <FiLogOut size={19} color="red"/></button>
+                        <button onClick={logout}>
+                          Logout <FiLogOut size={19} color="red" />
+                        </button>
                       </li>
                     </ul>
                   </>
                 )}
               </div>
-            </> 
-            
-          ) :
-            (
-              <>
+            </>
+          ) : (
+            <>
               {/* <button href="/" className="btn btn-outline" onClick={logout}>
                 Logout
               </button> */}
@@ -116,11 +157,8 @@ export default function Navbar() {
               <Link href="/signup" className="btn btn-primary ml-4">
                 Signup
               </Link>
-              
             </>
-            )
-          }
-          
+          )}
         </div>
       </div>
     </>
